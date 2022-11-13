@@ -27,7 +27,6 @@ public class BOJ1920 {
         st = new StringTokenizer(br.readLine());
 
         for(int i = 0; i < M; i++) {
-            // 찾고자 하는 값이 있을 경우 1, 없을 경우 0을 출력해야한다.
             if(binarySearch(Integer.parseInt(st.nextToken()))) {
                 sb.append(1).append('\n');
             }
