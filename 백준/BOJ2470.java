@@ -37,6 +37,9 @@ public class BOJ2470 {
                 ansRight = arr[rightIdx];
             }
 
+            if(tmp == 0)
+                break;
+
             // 양수라면
             if(beforeAbs < 0)
                 leftIdx++;
