@@ -17,7 +17,6 @@ public class BOJ24416 {
         dp[1] = 1;
         dp[2] = 1;
 
-
         recurFib(n);
         dpFib(n);
 
