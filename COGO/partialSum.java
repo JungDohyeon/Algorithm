@@ -1,4 +1,4 @@
-package 백준;
+package COGO;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
