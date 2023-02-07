@@ -41,6 +41,7 @@ public class BOJ14503 {
         System.out.println(cnt);
     }
 
+    // dfs
     static void clean(int r, int c, int d) {
         map[r][c] = -1; // -1은 청소를 한 부분을 나타낸다.
 
