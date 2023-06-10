@@ -16,10 +16,13 @@ public class BOJ1662 {
         stack = new Stack<>();
 
         for(int i = 0; i < arr.length; i++) {
-            char c = arr[i];
+            char c = arr[i];    // String 배열.
 
+            // 괄호가 열리면 스택에 괄호 내부 부분 삽입.
             if(c == '(')
                 stack.push(i);
+
+            // 괄호가 닫힌다면 배열에
             if(c == ')')
                 dest[stack.pop()] = i;
         }
