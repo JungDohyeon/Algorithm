@@ -12,11 +12,6 @@ class Solution {
             // 배열 정렬
             quickSort(copyArr, 0, copyArr.length-1);
             
-            for(int k= 0; k < copyArr.length; k++) {
-                System.out.print(copyArr[k]);
-            }
-            System.out.println();
-            
             answer[i] = copyArr[commands[i][2] - 1];
         }
 
