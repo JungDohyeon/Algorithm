@@ -3,26 +3,17 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    private static class Node {
-        int x;
-        int y;
-
-        public Node (int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 
     final static int[] dx = {0, 0, -1, 1};
     final static int[] dy = {1, -1, 0, 0};
 
     static int R, C, ans;
     static int[][] map;
-    static boolean[] visited;
+    static int[][] visited;
 
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -33,41 +24,49 @@ public class Main {
         C = Integer.parseInt(st.nextToken());
         ans = 0;
 
-        map = new int[R][C];
-        visited = new boolean[26];
+        map = new int[R + 2][C + 2];
+        visited = new int[R + 1][C + 1];
 
         for (int i = 0; i < R; i++) {
             String str = br.readLine();
 
             for (int j = 0; j < C; j++) {
-                map[i][j] = str.charAt(j) - 'A';
+                map[i + 1][j + 1] = str.charAt(j) - 'A';
             }
         }
 
-        dfs(new Node(0, 0), 0);
+        int first = map[1][1];
+        Arrays.fill(map[0], first);
+        Arrays.fill(map[R + 1], first);
+        for (int i = 0; i < R + 2; i++){
+            for (int j : new int[]{0, C + 1}){
+                map[i][j] = first;
+            }
+        }
 
-        bw.write(String.valueOf(ans == 0 ? 1 : ans));
+        dfs(1, 1, 1 << first, 1);
+
+        bw.write(String.valueOf(ans));
         bw.flush();
         bw.close();
     }
 
-    private static void dfs(Node node, int cnt) {
-        if(visited[map[node.x][node.y]]) {
-            ans = Math.max(ans, cnt);
-        } else {
-            visited[map[node.x][node.y]] = true;
+    private static void dfs(int x, int y, int bit, int cnt) {
+        ans = Math.max(ans, cnt);
 
-            for (int i = 0; i < 4; i++) {
-                int nx = node.x + dx[i];
-                int ny = node.y + dy[i];
+        if (ans == 26)
+            return;
 
-                if(nx < 0 || ny < 0 || nx >= R || ny >= C)
-                    continue;
+        visited[x][y] = bit;
 
-                dfs(new Node(nx, ny), cnt + 1);
+        for (int i = 0; i < 4; i++){
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if ((bit & 1 << map[nx][ny]) == 0 &&
+                    (bit | 1 << map[nx][ny]) != visited[nx][ny]) {
+                dfs(nx, ny, bit | 1 << map[nx][ny], cnt + 1);
             }
-
-            visited[map[node.x][node.y]] = false;
         }
     }
 }
