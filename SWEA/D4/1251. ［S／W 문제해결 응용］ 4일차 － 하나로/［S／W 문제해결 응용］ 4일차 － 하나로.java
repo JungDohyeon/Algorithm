@@ -2,34 +2,6 @@ import java.util.*;
 import java.io.*;
 
 public class Solution {
-    static class DisjointSet {
-        int[] parent;
-
-        DisjointSet(int n) {
-            parent = new int[n];
-
-            for (int i = 0; i < n; i++) {
-                parent[i] = i;
-            }
-        }
-
-        int find(int x) {
-            if (parent[x] == x)
-                return x;
-
-            return parent[x] = find(parent[x]);
-        }
-
-        void union(int x, int y) {
-            int nx = find(x);
-            int ny = find(y);
-
-            if (nx != ny) {
-                parent[ny] = nx;
-            }
-        }
-    }
-
     static class Edge implements Comparable<Edge> {
         int from;
         int to;
@@ -47,6 +19,9 @@ public class Solution {
         }
     }
 
+    public static int N;
+    public static int[] parents;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -55,7 +30,8 @@ public class Solution {
         int T = Integer.parseInt(br.readLine().trim());
 
         for (int tc = 1; tc <= T; tc++) {
-            int N = Integer.parseInt(br.readLine());
+            N = Integer.parseInt(br.readLine());
+            parents = new int[N];
 
             long[] X = new long[N];
             long[] Y = new long[N];
@@ -73,10 +49,10 @@ public class Solution {
             List<Edge> edges = new ArrayList<>();
             for (int i = 0; i < N; i++) {
                 for (int j = i + 1; j < N; j++) {
-                    long dx = X[i] - X[j];
-                    long dy = Y[i] - Y[j];
+                    long nx = X[i] - X[j];
+                    long ny = Y[i] - Y[j];
 
-                    double dist = Math.sqrt(dx * dx + dy * dy);
+                    double dist = Math.sqrt(nx * nx + ny * ny);
                     double weight = E * dist * dist;
 
                     edges.add(new Edge(i, j, weight));
@@ -84,15 +60,14 @@ public class Solution {
             }
 
             Collections.sort(edges);
-
-            DisjointSet set = new DisjointSet(N);
+            make();
 
             double ans = 0;
             int cnt = 0;
 
             for (Edge edge: edges) {
-                if (set.find(edge.from) != set.find(edge.to)) {
-                    set.union(edge.from, edge.to);
+                if (find(edge.from) != find(edge.to)) {
+                    union(edge.from, edge.to);
                     ans += edge.weight;
 
                     cnt++;
@@ -108,5 +83,28 @@ public class Solution {
         bw.write(sb.toString());
         bw.flush();
         bw.close();
+    }
+
+    private static void make() {
+        for (int i = 0; i < N; i++) {
+            parents[i] = i;
+        }
+    }
+
+
+    private static int find(int x) {
+        if (parents[x] == x)
+            return x;
+
+        return parents[x] = find(parents[x]);
+    }
+
+    private static void union(int x, int y) {
+        int nx = find(x);
+        int ny = find(y);
+
+        if (nx != ny) {
+            parents[ny] = nx;
+        }
     }
 }
